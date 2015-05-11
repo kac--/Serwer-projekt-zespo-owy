@@ -3,7 +3,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
 import java.net.Socket;
 
 
@@ -21,19 +20,18 @@ public class ConnectionThread implements Runnable  {
 		this.client=client;
 		Thread watek = new Thread(this);
 		watek.start();
-		
-	}
+		}
 	
 	boolean isConnected(){
 		if((null == client)||( client.isClosed())){
 			return false;	
-			
 		}
 		if((! readerCreated)||(! writerCreated)){
 			return false;
 		}
 		return true;
-	}
+		}
+		
 	void disconnect()  {
 		try {
 			in.close();
@@ -43,9 +41,8 @@ public class ConnectionThread implements Runnable  {
 		}
 	}
 	
-	
 	public void run()  {
-		System.out.println("start : " + Thread.currentThread().getName()  );
+		System.out.println("start : " + Thread.currentThread().getName());
 		try {
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			readerCreated = true;
@@ -53,7 +50,6 @@ public class ConnectionThread implements Runnable  {
 			writerCreated = true;
 		} catch (IOException e) {
 			readerCreated = false;
-			
 		}
 		while(isConnected()){
 			try {
@@ -65,7 +61,9 @@ public class ConnectionThread implements Runnable  {
 				disconnect();
 				break;
 			}
+			
 			int charExists = fromClient.indexOf("|");
+			
 			if(charExists == -1){ // bo funkcja indexOf zwraca -1 je¿eli nie znajdzie znaku "|"
 				System.out.println(fromClient);
 				continue;
